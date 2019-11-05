@@ -1,13 +1,34 @@
 import 'dotenv/config';
+import cors from 'cors';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 
-const userCredentials = { firstname: 'Robin' };
-const userDetails = { nationality: 'German' };
+import schema from './schema';
+import resolvers from './resolvers';
+import models, { sequelize } from './models';
+import createUsersWithMessages from './seed';
 
-const user = {
-  ...userCredentials,
-  ...userDetails,
-};
+const app = express();
+app.use(cors());
 
-console.log(user);
+const server = new ApolloServer({
+  typeDefs: schema,
+  resolvers,
+  context: async () => ({
+    models,
+    me: await models.User.findByLogin('rwieruch'),
+  }),
+});
 
-console.log(process.env.SOME_ENV_VARIABLE);
+server.applyMiddleware({ app, path: '/graphql' });
+
+const eraseDatabaseOnSync = false;
+sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
+  if (eraseDatabaseOnSync) {
+    createUsersWithMessages();
+  }
+  app.listen({ port: 8000 }, () => {
+    // eslint-disable-next-line no-console
+    console.log('Apollo Server on http://localhost:8000/graphql');
+  });
+});
