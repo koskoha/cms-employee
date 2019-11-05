@@ -9,6 +9,9 @@ export default {
       return user;
     },
     me: async (_parent, _args, { models, me }) => {
+      if (!me) {
+        return null;
+      }
       const user = await models.User.findByPk(me.id);
       return user;
     },

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 export default {
   Query: {
     messages: async (parent, args, { models }) => {
@@ -9,7 +8,7 @@ export default {
       try {
         return await models.Message.findByPk(id);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
   },
@@ -21,14 +20,14 @@ export default {
           userId: me.id,
         });
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
     deleteMessage: async (parent, { id }, { models }) => {
       try {
         return await models.Message.destroy({ where: { id } });
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
   },
@@ -37,7 +36,7 @@ export default {
       try {
         return await models.User.findByPk(message.userId);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
   },
