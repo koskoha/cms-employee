@@ -1,10 +1,13 @@
+import { combineResolvers } from 'graphql-resolvers';
+import { isAuthenticated, isMessageOwner } from './authorization';
+
 export default {
   Query: {
-    messages: async (parent, args, { models }) => {
+    messages: async (_parent, _args, { models }) => {
       const messages = await models.Message.findAll();
       return messages;
     },
-    message: async (parent, { id }, { models }) => {
+    message: async (_parent, { id }, { models }) => {
       try {
         return await models.Message.findByPk(id);
       } catch (error) {
@@ -13,7 +16,7 @@ export default {
     },
   },
   Mutation: {
-    createMessage: async (parent, { text }, { me, models }) => {
+    createMessage: combineResolvers(isAuthenticated, async (_parent, { text }, { models, me }) => {
       try {
         return await models.Message.create({
           text,
@@ -22,17 +25,17 @@ export default {
       } catch (error) {
         throw new Error(error);
       }
-    },
-    deleteMessage: async (parent, { id }, { models }) => {
+    }),
+    deleteMessage: combineResolvers(isAuthenticated, isMessageOwner, async (_parent, { id }, { models }) => {
       try {
         return await models.Message.destroy({ where: { id } });
       } catch (error) {
         throw new Error(error);
       }
-    },
+    }),
   },
   Message: {
-    user: async (message, args, { models }) => {
+    user: async (message, _args, { models }) => {
       try {
         return await models.User.findByPk(message.userId);
       } catch (error) {
