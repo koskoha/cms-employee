@@ -1,41 +1,33 @@
 import models from '../models';
 
 export default async date => {
-  await models.User.create(
+  await models.Admin.create(
     {
-      username: 'rwieruch',
-      email: 'hello@robin.com',
-      password: 'rwieruch',
+      username: 'kostya',
+      email: 'kos.koha@gmail.com',
+      password: '1234567',
       role: 'ADMIN',
-      messages: [
+      employees: [
         {
-          text: 'Published the Road to learn React',
-          createdAt: date.setSeconds(date.getSeconds() + 1),
+          name: 'boris',
+          position: 'HELPER',
+          rate: 16,
         },
       ],
     },
     {
-      include: [models.Message],
+      include: [models.Employee],
     }
   );
-  await models.User.create(
+  await models.Admin.create(
     {
       username: 'ddavids',
       email: 'hello@david.com',
       password: 'ddavids',
-      messages: [
-        {
-          text: 'Happy to release ...',
-          createdAt: date.setSeconds(date.getSeconds() + 1),
-        },
-        {
-          text: 'Published a complete ...',
-          createdAt: date.setSeconds(date.getSeconds() + 1),
-        },
-      ],
+      employees: [],
     },
     {
-      include: [models.Message],
+      include: [models.Employee],
     }
   );
 };

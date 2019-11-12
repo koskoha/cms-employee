@@ -1,10 +1,10 @@
 export const batchUsers = async (keys, models) => {
-  const users = await models.User.findAll({
+  const admins = await models.Admin.findAll({
     where: {
       id: {
         $in: keys,
       },
     },
   });
-  return keys.map(key => users.find(user => user.id === key));
+  return keys.map(key => admins.find(user => user.id === key));
 };

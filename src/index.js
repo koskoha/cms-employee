@@ -43,7 +43,7 @@ const server = new ApolloServer({
       return {
         models,
         loaders: {
-          user: new DataLoader(keys => loaders.user.batchUsers(keys, models)),
+          admin: new DataLoader(keys => loaders.admin.batchUsers(keys, models)),
         },
       };
     }
@@ -54,7 +54,7 @@ const server = new ApolloServer({
         me,
         secret: process.env.SECRET,
         loaders: {
-          user: new DataLoader(keys => loaders.user.batchUsers(keys, models)),
+          admin: new DataLoader(keys => loaders.admin.batchUsers(keys, models)),
         },
       };
     }
@@ -68,7 +68,7 @@ server.installSubscriptionHandlers(httpServer);
 
 const isTest = !!process.env.TEST_DATABASE;
 
-sequelize.sync({ force: isTest }).then(async () => {
+sequelize.sync({ force: true }).then(async () => {
   if (isTest) {
     createUsersWithMessages(new Date());
   }

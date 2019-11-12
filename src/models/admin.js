@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
-const user = (sequelize, DataTypes) => {
-  const User = sequelize.define('user', {
+const admin = (sequelize, DataTypes) => {
+  const Admin = sequelize.define('admin', {
     username: {
       type: DataTypes.STRING,
       unique: true,
@@ -32,27 +32,28 @@ const user = (sequelize, DataTypes) => {
     },
   });
 
-  User.associate = models => {
-    User.hasMany(models.Message, { onDelete: 'CASCADE' });
+  Admin.associate = models => {
+    Admin.hasMany(models.Job, { onDelete: 'CASCADE' });
+    Admin.hasMany(models.Employee, { onDelete: 'CASCADE' });
   };
 
-  User.findByLogin = async login => {
-    let existingUser = await User.findOne({
+  Admin.findByLogin = async login => {
+    let existingUser = await Admin.findOne({
       where: { username: login },
     });
     if (!existingUser) {
-      existingUser = await User.findOne({
+      existingUser = await Admin.findOne({
         where: { email: login },
       });
     }
     return existingUser;
   };
 
-  User.beforeCreate(async newUser => {
-    newUser.password = await newUser.generatePasswordHash();
+  Admin.beforeCreate(async newAdmin => {
+    newAdmin.password = await newAdmin.generatePasswordHash();
   });
 
-  User.prototype.generatePasswordHash = async function() {
+  Admin.prototype.generatePasswordHash = async function() {
     const saltRounds = 10;
     try {
       return await bcrypt.hash(this.password, saltRounds);
@@ -61,7 +62,7 @@ const user = (sequelize, DataTypes) => {
     }
   };
 
-  User.prototype.validatePassword = async function(password) {
+  Admin.prototype.validatePassword = async function(password) {
     try {
       return await bcrypt.compare(password, this.password);
     } catch (error) {
@@ -69,6 +70,6 @@ const user = (sequelize, DataTypes) => {
     }
   };
 
-  return User;
+  return Admin;
 };
-export default user;
+export default admin;

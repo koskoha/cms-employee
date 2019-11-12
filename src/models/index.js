@@ -14,8 +14,9 @@ if (process.env.DATABASE_URL) {
   });
 }
 const models = {
-  User: sequelize.import('./user'),
-  Message: sequelize.import('./message'),
+  Admin: sequelize.import('./admin'),
+  Employee: sequelize.import('./employee'),
+  Job: sequelize.import('./job.js'),
 };
 Object.keys(models).forEach(key => {
   if ('associate' in models[key]) {

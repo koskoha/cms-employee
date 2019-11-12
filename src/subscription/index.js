@@ -1,9 +1,9 @@
 import { PubSub } from 'apollo-server';
 
-import * as MESSAGE_EVENTS from './message';
+import * as EMPLOYEE_EVENTS from './employee';
 
 export const EVENTS = {
-  MESSAGE: MESSAGE_EVENTS,
+  EMPLOYEE: EMPLOYEE_EVENTS,
 };
 
 export default new PubSub();
