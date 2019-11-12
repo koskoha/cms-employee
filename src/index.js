@@ -68,7 +68,7 @@ server.installSubscriptionHandlers(httpServer);
 
 const isTest = !!process.env.TEST_DATABASE;
 
-sequelize.sync({ force: true }).then(async () => {
+sequelize.sync({ force: isTest }).then(async () => {
   if (isTest) {
     createUsersWithMessages(new Date());
   }

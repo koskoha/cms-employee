@@ -8,7 +8,6 @@ const job = (sequelize, DataTypes) => {
           msg: 'A job has to have a name.',
         },
         min: 4,
-        default: 4,
       },
     },
   });

@@ -74,13 +74,16 @@ export default {
   },
 
   Employee: {
-    admin: async (employee, _args, { loaders }) => {
+    admin: async (employee, _args, { loaders, models }) => {
       try {
         return await loaders.admin.load(employee.adminId);
+        // return await models.Admin.findByPk(employee.adminId);
       } catch (error) {
         throw new Error(error);
       }
     },
+    // const admin = await models.Admin.findByPk(employee.adminId);
+    // return admin;
     jobs: async (_employee, _args, { models }) => {
       const jobs = await models.Job.findAll({
         include: [
