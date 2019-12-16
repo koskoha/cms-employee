@@ -1,0 +1,7 @@
+{
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#0a6ff3",
+    "titleBar.inactiveBackground": "#0a6ff3"
+  },
+  "npm-scripts.showStartNotification": false
+}

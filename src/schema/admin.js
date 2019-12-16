@@ -4,7 +4,7 @@ export default gql`
   extend type Query {
     admins: [Admin!]
     admin(id: ID!): Admin
-    me: Admin
+    currentUser: Admin
   }
   extend type Mutation {
     signUp(username: String!, email: String!, password: String!, role: UserRole): Token!

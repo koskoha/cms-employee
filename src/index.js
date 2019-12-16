@@ -15,8 +15,8 @@ import loaders from './loaders';
 const app = express();
 app.use(cors());
 
-const getMe = async req => {
-  const token = req.headers['x-token'];
+const getCurrentUser = async req => {
+  const token = req.headers.authorization;
   if (token) {
     try {
       return await jwt.verify(token, process.env.SECRET);
@@ -48,10 +48,10 @@ const server = new ApolloServer({
       };
     }
     if (req) {
-      const me = await getMe(req);
+      const currentUser = await getCurrentUser(req);
       return {
         models,
-        me,
+        currentUser,
         secret: process.env.SECRET,
         loaders: {
           admin: new DataLoader(keys => loaders.admin.batchUsers(keys, models)),

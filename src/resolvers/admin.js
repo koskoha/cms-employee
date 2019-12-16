@@ -26,11 +26,13 @@ export default {
       const admin = await models.Admin.findByPk(id);
       return admin;
     },
-    me: async (_parent, _args, { models, me }) => {
-      if (!me) {
+    currentUser: async (_parent, _args, { models, currentUser }) => {
+      if (!currentUser) {
+        console.log('NO USER');
         return null;
       }
-      const admin = await models.Admin.findByPk(me.id);
+      console.log('currentUser:', currentUser);
+      const admin = await models.Admin.findByPk(currentUser.id);
       return admin;
     },
   },
